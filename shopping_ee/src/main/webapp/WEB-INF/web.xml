@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
+  <display-name>shopping_ee</display-name>
+  <welcome-file-list>
+    <welcome-file>login.jsp</welcome-file>
+<!--    <welcome-file>default.html</welcome-file>-->
+<!--    <welcome-file>default.html</welcome-file>-->
+<!--    <welcome-file>default.jsp</welcome-file>-->
+  </welcome-file-list>
+<!--  设置会话有效时间-->
+  <session-config>
+<!--    设置会话有效时间，单位是分钟-->
+    <session-timeout>5</session-timeout>
+  </session-config>
+
+
+<!--  设置上下文参数-->
+  <context-param>
+    <description>每页显示条目</description>
+    <param-name>pageSize</param-name>
+    <param-value>10</param-value>
+  </context-param>
+  
+  <listener>
+    <listener-class>com.tentact.shopping.listener.LogLoginListener</listener-class>
+  </listener>
+  <listener>
+    <listener-class>com.tentact.shopping.listener.OnlineListener</listener-class>
+  </listener>
+
+
+</web-app>

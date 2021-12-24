@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Insert title here</title>
+</head>
+<body onload="createPro()">
+省份：
+<select id="pid" name="proId"   onchange="createCity()">
+    <option>请选择省份</option>
+</select>
+城市：<select id="cid">
+    <option>请选择城市</option>
+</select>
+区域：<select>
+    <option>请选择区域</option>
+</select>
+</body>
+<script type="text/javascript">
+    var xmlHttpRequest;
+    if(window.ActiveXObject){
+        // IE内核
+        xmlHttpRequest = new ActiveXObject("Micrsoft.XMLHTTP")
+    }else{
+        xmlHttpRequest = new XMLHttpRequest();
+    }
+    function createPro(){
+        // 页面载入时 查询省份信息  生成下拉框
+        // 发送的路径
+        var url = "pro?flag=selectPro";
+        xmlHttpRequest.open("GET",url,true);
+        xmlHttpRequest.onreadystatechange=createProvince;
+        xmlHttpRequest.send(null);
+    }
+    function createProvince(){
+        if(xmlHttpRequest.readyState==4&&xmlHttpRequest.status==200){
+            var msg = xmlHttpRequest.responseText;
+            console.log(msg);
+            // 转换
+            var arr = JSON.parse(msg);
+            // 循环生成下拉框
+            for(let i=0;i<arr.length;i++){
+                // var opt = dpcument.createElement("option");
+                //opt.text=""
+                // var opt = new Option(text,value);
+                var opt = new Option(arr[i].provice,arr[i].proviceId);
+                // 追加
+                document.getElementById("pid").append(opt);
+            }
+        }
+    }
+    function createCity(){
+        var pid = document.getElementById("pid").value;
+        var url = "pro?flag=selectCity&proId="+pid;
+        xmlHttpRequest.open("GET",url,true);
+        xmlHttpRequest.onreadystatechange=createCityOpt;
+        xmlHttpRequest.send(null);
+    }
+    function createCityOpt(){
+        if(xmlHttpRequest.readyState==4&&xmlHttpRequest.status==200){
+            var msg = xmlHttpRequest.responseText;
+            // 转换
+            var arr = JSON.parse(msg);
+            // 清除以前的内容
+            document.getElementById("cid").length=1;
+            // 循环生成下拉框
+            for(let i=0;i<arr.length;i++){
+                var opt = new Option(arr[i].city,arr[i].cityId);
+                // 追加
+                document.getElementById("cid").append(opt);
+            }
+        }
+    }
+</script>
+</html>

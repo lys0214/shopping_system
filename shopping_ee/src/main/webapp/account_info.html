@@ -1,0 +1,133 @@
+<!--
+ * @Descripttion: 
+ * @version: 1.0
+ * @Author: LiYansheng
+ * @Date: 2021-12-03 09:20:20
+ * @LastEditors: CoderXZ
+ * @LastEditTime: 2021-12-13 16:37:50
+-->
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>后台管理系统-HTML5后台管理系统</title>
+  <meta name="keywords" content="设置关键词..." />
+  <meta name="description" content="设置描述..." />
+  <meta name="author" content="DeathGhost" />
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+  <link rel="icon" href="images/icon/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" type="text/css" href="css/style.css" />
+  <script src="javascript/jquery.js"></script>
+  <script src="javascript/plug-ins/customScrollbar.min.js"></script>
+  <script src="javascript/plug-ins/echarts.min.js"></script>
+  <script src="javascript/plug-ins/layerUi/layer.js"></script>
+  <script src="editor/ueditor.config.js"></script>
+  <script src="editor/ueditor.all.js"></script>
+  <script src="javascript/plug-ins/pagination.js"></script>
+  <script src="javascript/public.js"></script>
+</head>
+
+
+<!-- 
+  异步获取数据练习
+ -->
+
+<body>
+  <div class="main-wrap">
+    <div class="side-nav">
+      <div class="side-logo">
+        <div class="logo">
+          <span class="logo-ico">
+            <i class="i-l-1"></i>
+            <i class="i-l-2"></i>
+            <i class="i-l-3"></i>
+          </span>
+          <strong>购物商城后台管理</strong>
+        </div>
+      </div>
+
+      <nav class="side-menu content mCustomScrollbar" data-mcs-theme="minimal-dark">
+        <jsp:include page="component/sideMenu.jsp" />
+      </nav>
+
+      <footer class="side-footer">© DeathGhost 版权所有</footer>
+
+    </div>
+    <div class="content-wrap">
+      <header class="top-hd">
+        <div class="hd-lt">
+          <a class="icon-reorder"></a>
+        </div>
+      </header>
+      <main class="main-cont content mCustomScrollbar">
+        <div class="page-wrap">
+          <!--开始::内容-->
+          <section class="page-hd">
+            <header>
+              <h2 class="title">账户信息管理</h2>
+              <p class="title-description">
+              </p>
+            </header>
+            <hr>
+            <div class="btn-drop-group">
+              <button class="btn btn-info dropdown-toggle">请选择角色</button>
+              <div class="drop-list">
+                <ul>
+                  <li><a href="AccountServlet?flag=selectAll">全部</a></li>
+                  <c:forEach items="${requestScope.roleList}" var="r">
+                    <li><a href="AccountServlet?flag=selectByRoleId&roleId=${r.roleId }">${r.roleName }</a></li>
+                  </c:forEach>
+                </ul>
+              </div>
+            </div>
+            <button id="getdata">异步显示数据</button>
+            <button class="btn btn-primary"
+              onclick="javascript:window.location.href='AccountServlet?flag=toInsert'">新建用户</button>
+          </section>
+          <table class="table table-bordered table-striped table-hover">
+            <thead>
+              <tr>
+                <th><input type="checkbox" name="ck"></th>
+                <th>账户名字</th>
+                <th>真实名字</th>
+                <th>账户电话</th>
+                <th>账户角色</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+          </table>
+          <!--开始::结束-->
+        </div>
+      </main>
+      <footer class="btm-ft">
+
+      </footer>
+    </div>
+  </div>
+
+</body>
+<script>
+  $(function () {
+    $("#getdata").click(function () {
+      $.ajax({
+        type: "get",
+        url: "http://localhost:8080/shopping_ee_war_exploded/AccountServlet",
+        data: {
+          flag: "getAll",
+        },
+        dataType: "json",
+        success: function (data, status, xhr) {
+          console.log(data)
+          console.log(data["dayTimes"])
+          console.log(data["roleCounts"])
+          console.log(data["selectTimes"])
+        }
+      });
+    })
+  })
+
+</script>
+
+</html>
